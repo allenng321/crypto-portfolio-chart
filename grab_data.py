@@ -1,12 +1,16 @@
-import plotly.graph_objects as go
-import pandas as pd
+import requests
+  
+address = "0xd1EF5ea82FbEFc3ae249a053d8Ed9C5d74c6a630"
+URL = f"http://api.ethplorer.io/getAddressInfo/{address}"
+  
+apiKey = "EK-jfm12-oYthmCw-sGE1Q"
+  
+PARAMS = {'apiKey': apiKey}
+r = requests.get(url = URL, params = PARAMS)
+  
+data = r.json()
+for i in data["tokens"]:
+    tokenInfo = i["tokenInfo"]
+    print("{} Price: {}".format(tokenInfo["name"], tokenInfo["price"]["rate"]))
 
-df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv')
-
-fig = go.Figure(data=[go.Candlestick(x=df['Date'],
-                open=df['AAPL.Open'], high=df['AAPL.High'],
-                low=df['AAPL.Low'], close=df['AAPL.Close'])
-                     ])
-
-fig.update_layout(xaxis_rangeslider_visible=False)
-fig.show()
+print("ETH balance " + str(data["ETH"]["balance"])
